@@ -1,5 +1,6 @@
 package com.mark.springbootmall.model;
 
+import com.mark.springbootmall.constant.ProductCategory;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -18,7 +19,8 @@ public class ProductEntity {
     private String productName;
 
     @Column(name = "category")
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private ProductCategory category;
 
     @Column(name = "image_url")
     private String imageUrl;
@@ -37,4 +39,6 @@ public class ProductEntity {
 
     @Column(name = "last_modified_date")
     private Date lastModifiedDate;
+
+
 }
