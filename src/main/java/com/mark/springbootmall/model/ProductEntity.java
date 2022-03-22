@@ -4,6 +4,7 @@ import com.mark.springbootmall.constant.ProductCategory;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.OffsetDateTime;
 import java.util.Date;
 
 @Data
@@ -40,5 +41,15 @@ public class ProductEntity {
     @Column(name = "last_modified_date")
     private Date lastModifiedDate;
 
+    @PrePersist
+    public void prePersist() {
+        Date now = new Date();
+        this.createdDate = now;
+        this.lastModifiedDate = now;
+    }
 
+    @PreUpdate
+    public void preUpdate() {
+        this.lastModifiedDate = new Date();
+    }
 }

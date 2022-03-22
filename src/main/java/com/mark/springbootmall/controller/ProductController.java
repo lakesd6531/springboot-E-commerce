@@ -1,13 +1,14 @@
 package com.mark.springbootmall.controller;
 
 import com.mark.springbootmall.dto.ProductDTO;
+import com.mark.springbootmall.dto.ProductRequest;
 import com.mark.springbootmall.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,10 +20,19 @@ public class ProductController {
     public ResponseEntity<ProductDTO> getProduct(@PathVariable Integer productId) {
         ProductDTO dto = productService.getProductById(productId);
 
-        if(dto != null) {
+        if (dto != null) {
             return ResponseEntity.status(HttpStatus.OK).body(dto);
-        }else{
+        } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+    }
+
+    @PostMapping("/products")
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody @Valid ProductRequest productRequest) {
+        Integer productId = productService.createProduct(productRequest);
+
+        ProductDTO productDTO = productService.getProductById(productId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(productDTO);
     }
 }
