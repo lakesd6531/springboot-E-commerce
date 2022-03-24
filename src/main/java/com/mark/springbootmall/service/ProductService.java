@@ -38,6 +38,13 @@ public class ProductService {
         productRepository.save(entity);
     }
 
+    @Transactional
+    public void deleteProductById(Integer productId) {
+        if (productRepository.findById(productId).isPresent()) {
+            productRepository.deleteById(productId);
+        }
+    }
+
     private ProductEntity convertToEntity(ProductRequest productRequest) {
         return setProductEntity(new ProductEntity(), productRequest);
     }
