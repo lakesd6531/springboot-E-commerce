@@ -9,12 +9,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
+
+    @GetMapping("/products")
+    public ResponseEntity<List<ProductDTO>> getProducts() {
+        List<ProductDTO> productList = productService.getProducts();
+
+        return ResponseEntity.status(HttpStatus.OK).body(productList);
+    }
 
     @GetMapping("/products/{productId}")
     public ResponseEntity<ProductDTO> getProduct(@PathVariable Integer productId) {
