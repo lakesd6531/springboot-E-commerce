@@ -1,5 +1,6 @@
 package com.mark.springbootmall.service;
 
+import com.mark.springbootmall.constant.ProductCategory;
 import com.mark.springbootmall.dao.ProductDao;
 import com.mark.springbootmall.dao.ProductRepository;
 import com.mark.springbootmall.dto.ProductDTO;
@@ -19,9 +20,9 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductDao productDao;
 
-    public List<ProductDTO> getProducts() {
+    public List<ProductDTO> getProducts(ProductCategory category, String search) {
 
-        List<ProductDTO> productList = productDao.getProducts();
+        List<ProductDTO> productList = productDao.getProducts(category, search);
         return productList;
     }
 
