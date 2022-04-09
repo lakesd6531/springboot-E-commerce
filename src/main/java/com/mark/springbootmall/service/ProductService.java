@@ -1,5 +1,6 @@
 package com.mark.springbootmall.service;
 
+import com.mark.springbootmall.dao.ProductDao;
 import com.mark.springbootmall.dao.ProductRepository;
 import com.mark.springbootmall.dto.ProductDTO;
 import com.mark.springbootmall.dto.ProductRequest;
@@ -10,19 +11,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductDao productDao;
 
     public List<ProductDTO> getProducts() {
-        List<ProductEntity> productEntityList = productRepository.findAll();
-        return productEntityList.stream()
-            .map(entity -> ModelMapperUtils.map(entity, ProductDTO.class))
-            .collect(Collectors.toList());
+
+        List<ProductDTO> productList = productDao.getProducts();
+        return productList;
     }
 
     public ProductDTO getProductById(Integer productId) {
