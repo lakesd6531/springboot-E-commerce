@@ -1,9 +1,9 @@
 package com.mark.springbootmall.service;
 
-import com.mark.springbootmall.constant.ProductCategory;
 import com.mark.springbootmall.dao.ProductDao;
 import com.mark.springbootmall.dao.ProductRepository;
 import com.mark.springbootmall.dto.ProductDTO;
+import com.mark.springbootmall.dto.ProductQueryParams;
 import com.mark.springbootmall.dto.ProductRequest;
 import com.mark.springbootmall.model.ProductEntity;
 import com.mark.util.ModelMapperUtils;
@@ -20,9 +20,9 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductDao productDao;
 
-    public List<ProductDTO> getProducts(ProductCategory category, String search) {
+    public List<ProductDTO> getProducts(ProductQueryParams productQueryParams) {
 
-        List<ProductDTO> productList = productDao.getProducts(category, search);
+        List<ProductDTO> productList = productDao.getProducts(productQueryParams);
         return productList;
     }
 
