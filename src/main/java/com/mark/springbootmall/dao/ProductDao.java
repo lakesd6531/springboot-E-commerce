@@ -17,11 +17,20 @@ public class ProductDao {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public List<ProductDTO> getProducts(ProductQueryParams productQueryParams) {
+        // WHERE 1=1 不會對查詢結果有任何的影響的
         String sql = "SELECT product_id, product_name, category, image_url, price, stock, description," +
             "created_date, last_modified_date " +
             "FROM product WHERE 1=1";
 
         Map<String, Object> map = new HashMap<>();
+
+        /* WHERE 1=1 主要是想要讓下面的查詢條件自由地去拼接在上面SQL語法的後面
+         如果 getCategory 不等於 null的話，整個sql語法就會變成
+         SELECT... FROM product WHERE 1=1 AND category = :category
+         (要特別注意 AND需保留空白)
+         如果 getCategory 等於 null的話，sql語法就會維持原本的樣子
+         SELECT... FROM product WHERE 1=1
+         */
 
         if (productQueryParams.getCategory() != null) {
             sql = sql + " AND category = :category";
@@ -32,6 +41,8 @@ public class ProductDao {
             sql = sql + " AND product_name LIKE :search";
             map.put("search", "%" + productQueryParams.getSearch() + "%");
         }
+
+        sql = sql + " ORDER BY " + productQueryParams.getOrderBy() + " " + productQueryParams.getSort();
 
         return namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
     }

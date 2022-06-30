@@ -19,6 +19,7 @@ public class ProductRowMapper implements RowMapper<ProductDTO> {
         product.setDescription(resultSet.getString("description"));
         product.setCreatedDate(resultSet.getTimestamp("created_date"));
         product.setLastModifiedDate(resultSet.getTimestamp("last_modified_date"));
+        product.setPrice(resultSet.getInt("price"));
         return product;
     }
 }
