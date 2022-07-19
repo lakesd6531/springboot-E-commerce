@@ -5,6 +5,7 @@ import com.mark.springbootmall.dto.ProductDTO;
 import com.mark.springbootmall.dto.ProductQueryParams;
 import com.mark.springbootmall.dto.ProductRequest;
 import com.mark.springbootmall.service.ProductService;
+import com.mark.springbootmall.util.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/products")
-    public ResponseEntity<List<ProductDTO>> getProducts(
+    public ResponseEntity<Page<ProductDTO>> getProducts(
         // 查詢條件 Filtering
         @RequestParam(required = false) ProductCategory category,
         @RequestParam(required = false) String search,
@@ -45,9 +46,20 @@ public class ProductController {
         productQueryParams.setLimit(limit);
         productQueryParams.setOffset(offset);
 
+        // 取得 product list
         List<ProductDTO> productList = productService.getProducts(productQueryParams);
 
-        return ResponseEntity.status(HttpStatus.OK).body(productList);
+        // 取得 product 總數
+        Integer total = productService.countProduct(productQueryParams);
+
+        // 分頁
+        Page<ProductDTO> page = new Page<>();
+        page.setLimit(limit);
+        page.setOffset(offset);
+        page.setTotal(total);
+        page.setResults(productList);
+
+        return ResponseEntity.status(HttpStatus.OK).body(page);
     }
 
     @GetMapping("/products/{productId}")

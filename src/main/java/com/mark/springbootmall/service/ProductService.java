@@ -56,6 +56,10 @@ public class ProductService {
         }
     }
 
+    public Integer countProduct(ProductQueryParams productQueryParams){
+        return productDao.countProduct(productQueryParams);
+    }
+
     private ProductEntity convertToEntity(ProductRequest productRequest) {
         return setProductEntity(new ProductEntity(), productRequest);
     }
