@@ -1,9 +1,9 @@
 package com.mark.springbootmall.controller;
 
 import com.mark.springbootmall.constant.ProductCategory;
-import com.mark.springbootmall.dto.ProductDTO;
 import com.mark.springbootmall.dto.ProductQueryParams;
 import com.mark.springbootmall.dto.ProductRequest;
+import com.mark.springbootmall.model.Product;
 import com.mark.springbootmall.service.ProductService;
 import com.mark.springbootmall.util.Page;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/products")
-    public ResponseEntity<Page<ProductDTO>> getProducts(
+    public ResponseEntity<Page<Product>> getProducts(
         // 查詢條件 Filtering
         @RequestParam(required = false) ProductCategory category,
         @RequestParam(required = false) String search,
@@ -47,13 +47,13 @@ public class ProductController {
         productQueryParams.setOffset(offset);
 
         // 取得 product list
-        List<ProductDTO> productList = productService.getProducts(productQueryParams);
+        List<Product> productList = productService.getProducts(productQueryParams);
 
         // 取得 product 總數
         Integer total = productService.countProduct(productQueryParams);
 
         // 分頁
-        Page<ProductDTO> page = new Page<>();
+        Page<Product> page = new Page<>();
         page.setLimit(limit);
         page.setOffset(offset);
         page.setTotal(total);
@@ -63,27 +63,27 @@ public class ProductController {
     }
 
     @GetMapping("/products/{productId}")
-    public ResponseEntity<ProductDTO> getProduct(@PathVariable Integer productId) {
-        ProductDTO dto = productService.getProductById(productId);
+    public ResponseEntity<Product> getProduct(@PathVariable Integer productId) {
+        Product product = productService.getProductById(productId);
 
-        if (dto != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(dto);
+        if (product != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(product);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
     @PostMapping("/products")
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody @Valid ProductRequest productRequest) {
+    public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductRequest productRequest) {
         Integer productId = productService.createProduct(productRequest);
 
-        ProductDTO productDTO = productService.getProductById(productId);
+        Product product = productService.getProductById(productId);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(productDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
 
     @PutMapping("/products/{productId}")
-    public ResponseEntity<ProductDTO> updateProduct(
+    public ResponseEntity<Product> updateProduct(
         @PathVariable Integer productId,
         @RequestBody @Valid ProductRequest productRequest) {
 
@@ -95,7 +95,7 @@ public class ProductController {
         // 修改商品的數據
         productService.updateProduct(productId, productRequest);
 
-        ProductDTO updatedProduct = productService.getProductById(productId);
+        Product updatedProduct = productService.getProductById(productId);
 
         return ResponseEntity.status(HttpStatus.OK).body(updatedProduct);
     }

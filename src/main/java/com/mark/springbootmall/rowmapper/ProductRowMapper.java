@@ -1,16 +1,16 @@
 package com.mark.springbootmall.rowmapper;
 
 import com.mark.springbootmall.constant.ProductCategory;
-import com.mark.springbootmall.dto.ProductDTO;
+import com.mark.springbootmall.model.Product;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ProductRowMapper implements RowMapper<ProductDTO> {
+public class ProductRowMapper implements RowMapper<Product> {
     @Override
-    public ProductDTO mapRow(ResultSet resultSet, int i) throws SQLException {
-        ProductDTO product = new ProductDTO();
+    public Product mapRow(ResultSet resultSet, int i) throws SQLException {
+        Product product = new Product();
         product.setProductId(resultSet.getInt("product_id"));
         product.setProductName(resultSet.getString("product_name"));
         product.setCategory(ProductCategory.valueOf(resultSet.getString("category")));
