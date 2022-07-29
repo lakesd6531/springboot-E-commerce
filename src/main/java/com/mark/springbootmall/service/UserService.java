@@ -1,6 +1,7 @@
 package com.mark.springbootmall.service;
 
 import com.mark.springbootmall.dao.UserDao;
+import com.mark.springbootmall.dto.UserLoginRequest;
 import com.mark.springbootmall.dto.UserRegisterRequest;
 import com.mark.springbootmall.model.User;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +32,21 @@ public class UserService {
 
     public User getUserById(Integer userId) {
         return userDao.getUserById(userId);
+    }
+
+    public User login(UserLoginRequest userLoginRequest) {
+        User user = userDao.getUserByEmail(userLoginRequest.getEmail());
+
+        if (user == null) {
+            log.warn("該 email {} 尚未註冊", userLoginRequest.getEmail());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        if (user.getPassword().equals(userLoginRequest.getPassword())) {
+            return user;
+        } else {
+            log.warn("email {} 的密碼不正確",userLoginRequest.getEmail());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 }
