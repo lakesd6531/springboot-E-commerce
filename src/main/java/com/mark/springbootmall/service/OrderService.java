@@ -4,6 +4,7 @@ import com.mark.springbootmall.dao.OrderDao;
 import com.mark.springbootmall.dao.ProductDao;
 import com.mark.springbootmall.dto.BuyItem;
 import com.mark.springbootmall.dto.CreateOrderRequest;
+import com.mark.springbootmall.model.Order;
 import com.mark.springbootmall.model.OrderItem;
 import com.mark.springbootmall.model.Product;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +22,11 @@ public class OrderService {
     private final ProductDao productDao;
 
     @Transactional
-    public Integer createOrder(Integer userId, CreateOrderRequest createOrderRequest){
+    public Integer createOrder(Integer userId, CreateOrderRequest createOrderRequest) {
         int totalAmount = 0;
         List<OrderItem> orderItemList = new ArrayList<>();
 
-        for(BuyItem buyItem : createOrderRequest.getBuyItemList()){
+        for (BuyItem buyItem : createOrderRequest.getBuyItemList()) {
             Product product = productDao.getProductById(buyItem.getProductId());
 
             // 計算總價錢
@@ -47,5 +48,15 @@ public class OrderService {
         orderDao.createOrderItems(orderId, orderItemList);
 
         return orderId;
+    }
+
+    public Order getOrderById(Integer orderId) {
+        Order order = orderDao.getOrderById(orderId);
+
+        List<OrderItem> orderItemList = orderDao.getOrderItemsByOrderId(orderId);
+
+        order.setOrderItemList(orderItemList);
+
+        return order;
     }
 }

@@ -1,6 +1,7 @@
 package com.mark.springbootmall.controller;
 
 import com.mark.springbootmall.dto.CreateOrderRequest;
+import com.mark.springbootmall.model.Order;
 import com.mark.springbootmall.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,8 @@ public class OrderController {
 
         Integer orderId = orderService.createOrder(userId, createOrderRequest);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(orderId);
+        Order order = orderService.getOrderById(orderId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(order);
     }
 }
