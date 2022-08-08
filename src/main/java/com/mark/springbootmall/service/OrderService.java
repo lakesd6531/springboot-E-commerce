@@ -5,6 +5,7 @@ import com.mark.springbootmall.dao.ProductDao;
 import com.mark.springbootmall.dao.UserDao;
 import com.mark.springbootmall.dto.BuyItem;
 import com.mark.springbootmall.dto.CreateOrderRequest;
+import com.mark.springbootmall.dto.OrderQueryParams;
 import com.mark.springbootmall.model.Order;
 import com.mark.springbootmall.model.OrderItem;
 import com.mark.springbootmall.model.Product;
@@ -88,5 +89,21 @@ public class OrderService {
         order.setOrderItemList(orderItemList);
 
         return order;
+    }
+
+    public List<Order> getOrders(OrderQueryParams orderQueryParams) {
+        List<Order> orderList = orderDao.getOrders(orderQueryParams);
+
+        for (Order order : orderList) {
+            List<OrderItem> orderItemList = orderDao.getOrderItemsByOrderId(order.getOrderId());
+
+            order.setOrderItemList(orderItemList);
+        }
+
+        return orderList;
+    }
+
+    public Integer countOrder(OrderQueryParams orderQueryParams) {
+        return orderDao.countOrder(orderQueryParams);
     }
 }
