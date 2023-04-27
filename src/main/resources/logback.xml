@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger{100}.%M - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(${LOG_LEVEL_PATTERN:-%5p}) %magenta(${PID:- }) --- [%t] %cyan(%logger{39}) : %msg%n</pattern>
+            <charset>utf-8</charset>
         </encoder>
     </appender>
 
-    <root level="debug">
+    <logger name="AUDIT_LOGGER" level="info" additivity="false">
         <appender-ref ref="STDOUT" />
-    </root>
+    </logger>
+
 </configuration>
