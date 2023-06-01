@@ -6,6 +6,7 @@ import com.mark.springbootmall.dto.ProductRequest;
 import com.mark.springbootmall.model.Product;
 import com.mark.springbootmall.service.ProductService;
 import com.mark.springbootmall.util.Page;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @Validated
 @RestController
+@Api(tags = "商品功能")
 @RequiredArgsConstructor
 public class ProductController {
 

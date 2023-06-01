@@ -5,6 +5,7 @@ import com.mark.springbootmall.dto.OrderQueryParams;
 import com.mark.springbootmall.model.Order;
 import com.mark.springbootmall.service.OrderService;
 import com.mark.springbootmall.util.Page;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @Validated
 @RestController
+@Api(tags = "訂單功能")
 @RequiredArgsConstructor
 public class OrderController {
 
